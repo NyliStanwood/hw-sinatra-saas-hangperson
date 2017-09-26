@@ -68,7 +68,6 @@ class HangpersonGame
     #puts "@guesses == test || @wrong_guesses == test #{@guesses == test || @wrong_guesses == test}"
 
     if flag
-
       return flag
     else
       #puts @word
@@ -104,7 +103,7 @@ class HangpersonGame
     previousGuesses = @guesses.split('')
 
     #which processes a guess and modifies the instance variables wrong_guesses and guesses accordingly
-    puts "++++++++RECEIVING:#{test_guess}"
+    puts "++++++++RECEIVING:#{test_guess} word=#{@word}"
 
     #if is invalidlanzar exepcion
     if test_guess == nil || test_guess == '' || test_guess == '%'
@@ -198,15 +197,42 @@ class HangpersonGame
   return false
 end #end of function
 
+def is_letter_repeated?(letter)
+  flag = false
+  @guesses == letter || @wrong_guesses == letter ? flag = true : flag = false
+  puts "@guesses == letter || @wrong_guesses == letter #{@guesses == letter || @wrong_guesses == letter}"
+
+  if flag
+    return flag
+  else
+    word = @wrong_guesses.split("")
+    guessChar = @guesses.split("")
+    #puts "***guesses_include_in? #{word} #{guessChar}"
+    word.each do |w|
+      guessChar.each do |g|
+        #puts "w == g && g == letter"
+        puts "#{w} == #{g} && #{g} == #{letter} ==> #{w == g && g == letter}"
+        if w == g && g == letter
+          return true
+        end
+      end
+    end
+  return false
+end
+  end #end of function
+
 end
 
-#game = HangpersonGame.new('banana')
-
-
 =begin
+game = HangpersonGame.new('banana')
+
+
+puts game.is_letter_repeated?('a')
 puts game.guess('a')
 puts game.guesses
 puts game.wrong_guesses
+puts game.is_letter_repeated?('a')
+
 puts "===game gueses==="
 puts game.guess('z')
 puts game.guesses
