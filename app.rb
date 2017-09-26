@@ -4,9 +4,9 @@ require './lib/hangperson_game.rb'
 
 class HangpersonApp < Sinatra::Base
 
-  post '/new' do
-    "Hello World"
-  end
+  #post '/new' do
+  #  "Hello World"
+  #end
 
 
   enable :sessions
@@ -45,6 +45,10 @@ class HangpersonApp < Sinatra::Base
   post '/guess' do
     letter = params[:guess].to_s[0]
     ### YOUR CODE HERE ###
+    if @game.is_letter_repeated?(letter)
+      flash[:message] = 'You have already used that letter'
+    end
+    @game.guess(letter)
     redirect '/show'
   end
 
@@ -55,7 +59,14 @@ class HangpersonApp < Sinatra::Base
   # wrong_guesses and word_with_guesses from @game.
   get '/show' do
     ### YOUR CODE HERE ###
-    erb :show # You may change/remove this line
+    if @game.check_win_or_lose == :win
+        redirect '/win'
+    elsif @game.check_win_or_lose == :lose
+        redirect '/lose'
+    else
+      erb :show
+    end
+    #erb :show # You may change/remove this line
   end
 
   get '/win' do
